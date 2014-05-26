@@ -6,6 +6,7 @@
 #include "CCNode+CCBRelativePositioning.h"
 #include <string>
 #include <set>
+#include <sstream>
 #include "SimpleAudioEngine.h"
 #include "CCBSelectorResolver.h"
 

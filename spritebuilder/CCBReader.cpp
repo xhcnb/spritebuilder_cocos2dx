@@ -4,7 +4,7 @@
 #include "CCDirector.h"
 #include "platform/CCFileUtils.h"
 #include "CCScene.h"
-#include "CCTextureCache.h"
+#include "renderer/CCTextureCache.h"
 #include "CCSpriteFrameCache.h"
 
 #include "CCBReader.h"
@@ -17,7 +17,7 @@
 #include "CCBSequenceProperty.h"
 #include "CCBKeyframe.h"
 #include "chipmunk.h"
-#include "CCPhysicsHelper_chipmunk.h"
+#include "chipmunk/CCPhysicsHelper_chipmunk.h"
 #include "CCBPhysicsBody.h"
 
 

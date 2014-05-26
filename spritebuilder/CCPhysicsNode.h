@@ -35,7 +35,7 @@ public:
     virtual ~PhysicsNode() {}
     PhysicsNode();
 
-    virtual kmMat4 getNodeToWorldTransform() const;
+    virtual Mat4 getNodeToWorldTransform() const;
     void setGravity(cocos2d::Point& gravity);
     cocos2d::Point getGravity();
     

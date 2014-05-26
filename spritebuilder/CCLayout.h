@@ -37,7 +37,7 @@ public:
     virtual void layout();
     
     virtual void addChild(Node * child, int localZOrder);
-    virtual void visit(Renderer *renderer, const kmMat4& parentTransform, bool parentTransformUpdated);
+    virtual void visit(Renderer *renderer, const Mat4& parentTransform, bool parentTransformUpdated);
     virtual const Size& getContentSize();
 protected:
     bool m_bNeedLayout;

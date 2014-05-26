@@ -23,7 +23,7 @@
 
 #include "CCBPhysicsBody.h"
 #include "CCBReader.h"
-#include "CCPhysicsBodyInfo_chipmunk.h"
+#include "chipmunk/CCPhysicsBodyInfo_chipmunk.h"
 
 using namespace cocos2d;
 namespace spritebuilder {

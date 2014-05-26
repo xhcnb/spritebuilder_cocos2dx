@@ -42,7 +42,7 @@ void Layout::addChild(Node * child, int localZOrder) {
     layout();
 }
 
-void Layout::visit(Renderer *renderer, const kmMat4& parentTransform, bool parentTransformUpdated) {
+void Layout::visit(Renderer *renderer, const Mat4& parentTransform, bool parentTransformUpdated) {
     if (m_bNeedLayout)
         layout();
     

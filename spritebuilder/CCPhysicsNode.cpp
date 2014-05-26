@@ -38,7 +38,7 @@ PhysicsNode* PhysicsNode::create() {
     }
     return NULL;
 }
-kmMat4 PhysicsNode::getNodeToWorldTransform() const
+Mat4 PhysicsNode::getNodeToWorldTransform() const
 {
     return this->getNodeToParentTransform();
 }

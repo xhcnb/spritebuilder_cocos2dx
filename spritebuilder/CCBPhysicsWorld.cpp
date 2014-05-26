@@ -22,11 +22,11 @@
  */
 
 #include "CCBPhysicsWorld.h"
-#include "CCPhysicsWorldInfo_chipmunk.h"
-#include "CCPhysicsShapeInfo_chipmunk.h"
+#include "chipmunk/CCPhysicsWorldInfo_chipmunk.h"
+#include "chipmunk/CCPhysicsShapeInfo_chipmunk.h"
 #include "CCBPhysicsBody.h"
-#include "CCPhysicsHelper_chipmunk.h"
-#include "CCPhysicsJointInfo_chipmunk.h"
+#include "chipmunk/CCPhysicsHelper_chipmunk.h"
+#include "chipmunk/CCPhysicsJointInfo_chipmunk.h"
 #include "CCBReader.h"
 
 using namespace cocos2d;
