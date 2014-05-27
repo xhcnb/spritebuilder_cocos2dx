@@ -51,56 +51,7 @@ void NodeLoader::parseProperties(Node * pNode, Node * pParent, CCBReader * ccbRe
 
         // Check if the property can be set for this platform
         bool setProp = true;
-        
-        if (dynamic_cast<CCBFile*>(pNode))
-        {
-            CCBFile* ccbNode = (CCBFile*) pNode;
-            if (ccbNode->getCCBFileNode() && isExtraProp)
-            {
-                pNode = ccbNode->getCCBFileNode();
-                
-                // Skip properties that doesn't have a value to override
-                CCSet* extraPropsNames = (CCSet*)pNode->getUserObject();
 
-                setProp &= extraPropsNames->containsObject(CCString::create(propertyName));
-            }
-        }
-        else if (isExtraProp && pNode == ccbReader->getAnimationManager()->getRootNode())
-        {
-
-            CCSet* extraPropsNames = (CCSet*)pNode->getUserData();
-            
-            if (!extraPropsNames)
-            {
-                extraPropsNames = CCSet::create();
-
-                pNode->setUserObject(extraPropsNames);
-            }
-            
-            extraPropsNames->addObject(CCString::create(propertyName));
-        }
-
-        /*
-        CCBReader::PlatformType platform = (CCBReader::PlatformType)ccbReader->readByte();
-        if(platform == CCBReader::PlatformType::ALL)
-        {
-            setProp = true;
-        }
-        // Cocos2d-x is using touch event callback for all platforms,
-        // it's different from cocos2d-iphone which uses mouse event for Mac port.
-        // So we just need to touch event by using CCBReader::PlatformType::IOS.
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-        if(platform == CCBReader::PlatformType::IOS)
-        {
-            setProp = true;
-        }
-// #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-//         if(platform == CCBReader::PlatformType::MAC)
-//         {
-//             setProp = true;
-//         }
-// #endif
-        */
         // Forward properties for sub ccb files
         if (dynamic_cast<CCBFile*>(pNode) != NULL)
         {
@@ -680,47 +631,31 @@ SpriteFrame * NodeLoader::parsePropTypeSpriteFrame(Node * pNode, Node * pParent,
 {
 
     std::string spriteFile = ccbReader->readCachedString();
-    
+
     SpriteFrame *spriteFrame = NULL;
     if (spriteFile.length() != 0)
     {
-        
-
-        
-//        if (spriteSheet.length() == 0)
-        {
-            //spriteFile = ccbReader->getCCBRootPath() + spriteFile;
-//            spriteFile = getFullResourcePath(spriteFile.c_str());
-
-            Texture2D * texture = Director::getInstance()->getTextureCache()->addImage(spriteFile.c_str());
-            if(texture != NULL) {
-                Rect bounds = Rect(0, 0, texture->getContentSize().width, texture->getContentSize().height);
-                spriteFrame = SpriteFrame::createWithTexture(texture, bounds);
-                
-            } else {
-                spriteFrame = NULL;
-                SpriteFrameCache * frameCache = SpriteFrameCache::getInstance();
-                SpriteFrame* spriteFrame = frameCache->getSpriteFrameByName(spriteFile);
-                
-                return spriteFrame;
-               
+        Texture2D * texture = Director::getInstance()->getTextureCache()->addImage(spriteFile.c_str());
+        if(texture != NULL) {
+            Rect bounds = Rect(0, 0, texture->getContentSize().width, texture->getContentSize().height);
+            spriteFrame = SpriteFrame::createWithTexture(texture, bounds);
+        } else {
+            //try load from SpriteFrameCache
+            spriteFrame = NULL;
+            std::string fileName;
+            auto _p = spriteFile.find_last_of("/");
+            if (_p) {
+                fileName = spriteFile.substr(_p+1);
+            }else{
+                fileName = spriteFile;
             }
-        }
-        /*
-        else 
-        {
+
             SpriteFrameCache * frameCache = SpriteFrameCache::getInstance();
-            spriteSheet = ccbReader->getCCBRootPath() + spriteSheet;   
-            // Load the sprite sheet only if it is not loaded
-            if (ccbReader->getLoadedSpriteSheet().find(spriteSheet) == ccbReader->getLoadedSpriteSheet().end())
-            {
-                frameCache->addSpriteFramesWithFile(spriteSheet.c_str());
-                ccbReader->getLoadedSpriteSheet().insert(spriteSheet);
-            }
-            
-            spriteFrame = frameCache->getSpriteFrameByName(spriteFile.c_str());
+            SpriteFrame* spriteFrame = frameCache->getSpriteFrameByName(fileName);
+
+            return spriteFrame;
         }
-         */
+
         if (ccbReader->getAnimatedProperties()->find(pPropertyName) != ccbReader->getAnimatedProperties()->end())
         {
             ccbReader->getAnimationManager()->setObject(spriteFrame, pNode, pPropertyName);
