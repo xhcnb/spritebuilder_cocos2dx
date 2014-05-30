@@ -635,25 +635,26 @@ SpriteFrame * NodeLoader::parsePropTypeSpriteFrame(Node * pNode, Node * pParent,
     SpriteFrame *spriteFrame = NULL;
     if (spriteFile.length() != 0)
     {
-        Texture2D * texture = Director::getInstance()->getTextureCache()->addImage(spriteFile.c_str());
-        if(texture != NULL) {
-            Rect bounds = Rect(0, 0, texture->getContentSize().width, texture->getContentSize().height);
-            spriteFrame = SpriteFrame::createWithTexture(texture, bounds);
-        } else {
-            //try load from SpriteFrameCache
-            spriteFrame = NULL;
-            std::string fileName;
-            auto _p = spriteFile.find_last_of("/");
-            if (_p) {
-                fileName = spriteFile.substr(_p+1);
-            }else{
-                fileName = spriteFile;
+        //try load from SpriteFrameCache
+        spriteFrame = nullptr;
+        std::string fileName;
+        auto _p = spriteFile.find_last_of("/");
+        if (_p) {
+            fileName = spriteFile.substr(_p+1);
+        }else{
+            fileName = spriteFile;
+        }
+
+        SpriteFrameCache * frameCache = SpriteFrameCache::getInstance();
+        spriteFrame = frameCache->getSpriteFrameByName(fileName);
+
+        //load from file
+        if (spriteFrame == nullptr) {
+            Texture2D * texture = Director::getInstance()->getTextureCache()->addImage(spriteFile.c_str());
+            if(texture != NULL) {
+                Rect bounds = Rect(0, 0, texture->getContentSize().width, texture->getContentSize().height);
+                spriteFrame = SpriteFrame::createWithTexture(texture, bounds);
             }
-
-            SpriteFrameCache * frameCache = SpriteFrameCache::getInstance();
-            SpriteFrame* spriteFrame = frameCache->getSpriteFrameByName(fileName);
-
-            return spriteFrame;
         }
 
         if (ccbReader->getAnimatedProperties()->find(pPropertyName) != ccbReader->getAnimatedProperties()->end())
